@@ -1,0 +1,3 @@
+[submodule "linpde-gp"]
+	path = linpde-gp
+	url = https://github.com/marvinpfoertner/linpde-gp
