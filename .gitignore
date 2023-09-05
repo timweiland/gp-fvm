@@ -1,3 +1,5 @@
 venv/
 *.pyc
 experiments/sandbox
+results/debug
+.DS_Store
