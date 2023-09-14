@@ -3,3 +3,5 @@ venv/
 experiments/sandbox
 results/debug
 .DS_Store
+*.egg-info
+*.egg
