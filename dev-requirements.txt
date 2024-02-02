@@ -1,0 +1,5 @@
+# Editable install of `linpde-shallow-water`
+-e .
+
+# Editable install of `linpde-gp`
+-e ./linpde-gp
