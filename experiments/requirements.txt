@@ -1,0 +1,11 @@
+tqdm>=4 # Progress bars
+matplotlib>=3.4.3
+tueplots>=0.0.15 # Neat plots
+pandas>=2.2
+python-dotenv>=1 # For loading environment variables from .env file
+h5py>=3 # PDEBench data comes in HDF5 format
+optuna>=3.6 # Hyperparameter optimization
+
+# For the interactive visualizations
+ipympl==0.8.8
+ipywidgets==7.6.5

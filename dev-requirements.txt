@@ -1,5 +1,8 @@
 # Editable install of `linpde-shallow-water`
 -e .
 
+-r ./experiments/requirements.txt
+
 # Editable install of `linpde-gp`
 -e ./linpde-gp
+-e ./linpde-gp/probnum
