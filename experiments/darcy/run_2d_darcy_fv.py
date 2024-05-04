@@ -60,7 +60,7 @@ def main():
     L_inf_errs = []
     MSEs = []
     runtimes = []
-    for i in tqdm(range(N_problems)):
+    for i in range(N_problems):
         errs, runtime = fit_fv(
             min_l_xy,
             hf,
@@ -72,6 +72,8 @@ def main():
         L_inf_errs.append(errs[0])
         MSEs.append(errs[1])
         runtimes.append(runtime)
+        if (i % 100) == 0:
+            print(f"{i} / {N_problems}")
     
     results_path = Path(args.results_path) / uuid.uuid4().hex
     results_path.mkdir(parents=True, exist_ok=True)
