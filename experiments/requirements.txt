@@ -5,6 +5,7 @@ pandas>=2.2
 python-dotenv>=1 # For loading environment variables from .env file
 h5py>=3 # PDEBench data comes in HDF5 format
 optuna>=3.6 # Hyperparameter optimization
+pyyaml>=6 # Argument parsing
 
 # For the interactive visualizations
 ipympl==0.8.8

@@ -15,6 +15,7 @@ import uuid
 from tqdm import tqdm
 
 import optuna
+import yaml
 
 def main():
     # l_t, l_x, hf, problem_idx, beta, N_pde_t=80, N_pde_x=80, ic_stride=10, N_bc=50, output_scale=1.0, 
@@ -85,9 +86,9 @@ def main():
         'runtime': runtimes
     })
     results.to_csv(results_path / 'results.csv')
-    # Dump args to file
-    with open(results_path / 'args.txt', 'w') as f:
-        f.write(str(args))
+    # Dump args to yaml
+    with open(results_path / 'args.yaml', 'w') as f:
+        yaml.dump(vars(args), f)
 
 
 if __name__ == '__main__':

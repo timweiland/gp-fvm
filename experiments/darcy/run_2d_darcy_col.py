@@ -17,6 +17,7 @@ from tqdm import tqdm
 import h5py
 
 import optuna
+import yaml
 
 def read_data(filename):
     return h5py.File(filename)
@@ -85,9 +86,9 @@ def main():
         'runtime': runtimes
     })
     results.to_csv(results_path / 'results.csv')
-    # Dump args to file
-    with open(results_path / 'args.txt', 'w') as f:
-        f.write(str(args))
+    # Dump args to yaml
+    with open(results_path / 'args.yaml', 'w') as f:
+        yaml.dump(vars(args), f)
 
 
 if __name__ == '__main__':
