@@ -1,8 +1,6 @@
 import linpde_gp
 import numpy as np
 import probnum as pn
-from gp_fvm.utils.figure_manager import FigureManager
-from gp_fvm.plot.dim1 import plot_function, compare_to_solution_gp
 from gp_fvm.finite_volumes import get_grid_from_depth
 from linpde_gp.benchmarking import SolutionErrorEstimator
 from linpde_gp.linfuncops.diffops import TimeDerivative
@@ -10,6 +8,7 @@ from gp_fvm.benchmark import evaluate_params
 import pandas as pd
 
 import argparse
+import yaml
 
 pn.config.default_solver_linpde_gp = linpde_gp.solvers.CholeskySolver(dense=True)
 
@@ -200,6 +199,10 @@ def main():
     df_errs_col.to_csv(f"{args.output_folder}/errs_col.csv")
     df_lengthscales_fv.to_csv(f"{args.output_folder}/lengthscales_fv.csv")
     df_lengthscales_col.to_csv(f"{args.output_folder}/lengthscales_col.csv")
+
+    # Dump args to yaml
+    with open(f"{args.output_folder}/args.yaml", 'w') as f:
+        yaml.dump(vars(args), f)
 
     print("Done.")
 
