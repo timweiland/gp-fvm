@@ -192,14 +192,14 @@ def generate_partitioned_arrays(original_shape, dividing_shape):
     return arrays
 
 
-def condition_subdomain(
+def condition_fvm(
     u: pn.randprocs.GaussianProcess,
     H_fn: pn.functions.Function,
     coriolis: float,
     domain: linpde_gp.domains.Box,
-    N_subdomain_t: int,
-    N_subdomain_x: int,
-    N_subdomain_y: int,
+    N_vols_t: int,
+    N_vols_x: int,
+    N_vols_y: int,
     N_precondition_t: int,
     N_precondition_x: int,
     N_precondition_y: int,
@@ -212,7 +212,7 @@ def condition_subdomain(
 
     SW1, SW2, SW3 = get_shallow_water_diffops_2D(H_fn, g, coriolis)
     domains_fine = get_grid_from_resolution(
-        domain, [N_subdomain_t, N_subdomain_x, N_subdomain_y]
+        domain, [N_vols_t, N_vols_x, N_vols_y]
     )
     print(f"Domains shape: {domains_fine.shape}")
     fv_fine_1 = linpde_gp.linfunctls.FiniteVolumeFunctional(domains_fine, SW1)
@@ -220,10 +220,10 @@ def condition_subdomain(
     fv_fine_3 = linpde_gp.linfunctls.FiniteVolumeFunctional(domains_fine, SW3)
     Y_fine = np.zeros(domains_fine.shape)
     precondition_vecs_small = generate_partitioned_arrays(
-        (N_subdomain_t, N_subdomain_x, N_subdomain_y), (N_precondition_t, N_precondition_x, N_precondition_y)
+        (N_vols_t, N_vols_x, N_vols_y), (N_precondition_t, N_precondition_x, N_precondition_y)
     )
     prior_size = u._gram_matrix.shape[1]
-    added_size = 3 * N_subdomain_t * N_subdomain_x * N_subdomain_y
+    added_size = 3 * N_vols_t * N_vols_x * N_vols_y
     total_size = prior_size + added_size
     precondition_vecs = []
     for vec in precondition_vecs_small:
@@ -294,9 +294,9 @@ def main():
     parser.add_argument("--ic-spacing-km", type=float, default=3)
     parser.add_argument("--bc-spacing-km", type=float, default=5)
     parser.add_argument("--bc-spacing-sec", type=float, default=30)
-    parser.add_argument("--subdomain-length-km-x", type=float, default=1)
-    parser.add_argument("--subdomain-length-km-y", type=float, default=5)
-    parser.add_argument("--subdomain-length-sec", type=float, default=20)
+    parser.add_argument("--volume-length-km-x", type=float, default=1)
+    parser.add_argument("--volume-length-km-y", type=float, default=5)
+    parser.add_argument("--volume-length-sec", type=float, default=20)
     parser.add_argument("--coriolis", type=float, default=0.0)
     parser.add_argument(
         "--logfile",
@@ -442,25 +442,24 @@ def main():
     else:
         u_ic_bc = condition_on_closed_boundary(u_ic, domain, N_bc_t, N_bc_x, N_bc_y)
 
-    print("Conditioning on subdomain...")
+    print("Conditioning on FVM...")
 
-    subdomain_length_sec = args.subdomain_length_sec
-    N_subdomain_x = int(dist_x / args.subdomain_length_km_x)
-    N_subdomain_y = int(dist_y / args.subdomain_length_km_y)
-    N_subdomain_t = int(args.duration / subdomain_length_sec)
+    N_volume_x = int(dist_x / args.volume_length_km_x)
+    N_volume_y = int(dist_y / args.volume_length_km_y)
+    N_volume_t = int(args.duration / args.volume_length_sec)
     print(
-        f"Subdomains: {N_subdomain_t} x {N_subdomain_x} x {N_subdomain_y} = {N_subdomain_t * N_subdomain_x * N_subdomain_y}"
+        f"Volumes: {N_volume_t} x {N_volume_x} x {N_volume_y} = {N_volume_t * N_volume_x * N_volume_y}"
     )
 
     output_folder = Path(args.output_folder)
-    u_sol, plot_logger = condition_subdomain(
+    u_sol, plot_logger = condition_fvm(
         u_ic_bc,
         H_fn,
         args.coriolis,
         domain,
-        N_subdomain_t,
-        N_subdomain_x,
-        N_subdomain_y,
+        N_volume_t,
+        N_volume_x,
+        N_volume_y,
         4,
         6,
         5,
