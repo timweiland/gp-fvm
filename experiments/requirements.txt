@@ -6,6 +6,7 @@ python-dotenv>=1 # For loading environment variables from .env file
 h5py>=3 # PDEBench data comes in HDF5 format
 optuna>=3.6 # Hyperparameter optimization
 pyyaml>=6 # Argument parsing
+rasterio>=1.3 # To read the bathymetry data for the tsunami example
 
 # For the interactive visualizations
 ipympl==0.8.8

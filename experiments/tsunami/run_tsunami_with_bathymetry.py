@@ -30,6 +30,7 @@ from linpde_gp.solvers.itergp.stopping_criteria import (
 from gp_fvm.finite_volumes import get_grid_from_resolution
 from tueplots import bundles
 from timeit import default_timer as timer
+import yaml
 
 pn.config.default_solver_linpde_gp = linpde_gp.solvers.CholeskySolver(dense=True)
 
@@ -324,10 +325,10 @@ def main():
 
     print("Arguments:")
     print(args)
-
-    # Dump arguments to file
-    with open(Path(args.output_folder) / "args.txt", "w") as f:
-        f.write(str(args))
+    
+    # Dump args to yaml
+    with open(Path(args.output_folder) / "args.yaml", 'w') as f:
+        yaml.dump(vars(args), f)
 
     if args.ffmpeg_path is not None:
         plt.rcParams["animation.ffmpeg_path"] = args.ffmpeg_path
