@@ -1,4 +1,4 @@
-# Editable install of `linpde-shallow-water`
+# Editable install of `gp-fvm`
 -e .
 
 -r ./experiments/requirements.txt
