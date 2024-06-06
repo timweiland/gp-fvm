@@ -17,7 +17,6 @@ import optuna
 import yaml
 
 def main():
-    # l_t, l_x, hf, problem_idx, beta, N_pde_t=80, N_pde_x=80, ic_stride=10, N_bc=50, output_scale=1.0, 
     parser = argparse.ArgumentParser()
     parser.add_argument('--hdf', type=str, default='../data/1D_Advection_Sols_beta0.4.hdf5')
     parser.add_argument('--beta', type=float, default=0.4)
