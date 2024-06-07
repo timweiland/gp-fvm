@@ -1,5 +1,11 @@
 # GP-FVM: Probabilistic Finite Volume Method
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![probnum](https://img.shields.io/badge/Probabilistic-Numerics-28bab4?labelColor=00369f)](https://www.probabilistic-numerics.org)
+[![python](https://img.shields.io/badge/Python-3.11-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
+[![pytorch](https://img.shields.io/badge/PyTorch-EE4C2C.svg?style=flat&logo=pytorch&logoColor=white)](https://pytorch.org)
+
+
 ![Tsunami simulation using GP-FVM](./results/sendai.gif)
 
 GP-FVM implements a fully probabilistic analogue of the popular Finite Volume Method (FVM) through affine Gaussian process (GP) inference.
