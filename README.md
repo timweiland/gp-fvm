@@ -1,17 +1,22 @@
-# GP-FVM: Probabilistic Finite Volume Method based on Affine Gaussian Process inference
+# GP-FVM: Probabilistic Finite Volume Method
 
 ![Tsunami simulation using GP-FVM](./results/sendai.gif)
 
-The code repository for our paper.
+GP-FVM implements a fully probabilistic analogue of the popular Finite Volume Method (FVM) through affine Gaussian process (GP) inference.
 
-GP-FVM implements a fully probabilistic analogue of the popular Finite Volume Method (FVM).
 Concretely, we provide implementations for FVM observations based on grid-structured observations.
 These reduce multi-dimensional integrals to products of one-dimensional integrals, enabling efficient closed-form inference instead of costly numerical quadrature.
 The resulting linear systems can be solved either directly through a Cholesky decomposition or iteratively.
-We provide various utilities for iterative solvers based on IterGP [3].
-We build directly on the framework implemented in LinPDE-GP [1] and use utilities from ProbNum [2].
+We provide various utilities for iterative solvers based on [IterGP](https://github.com/JonathanWenger/itergp) [3].
+We build directly on the framework implemented in [LinPDE-GP](https://github.com/marvinpfoertner/linpde-gp) [1] and use utilities from [ProbNum](https://github.com/probabilistic-numerics/probnum) [2].
 
-## Cloning
+## Installation
+
+> [!NOTE]  
+> This is research code. As such, there is still room for improvement in terms of usability.
+> If you have trouble using or understanding our code, please reach out to us, e.g. by creating an issue on GitHub.
+
+### Cloning
 
 This repository includes git submodules. Therefore, please clone it via
 
@@ -25,7 +30,7 @@ If you forgot the `--recurse-submodules` flag, simply run
 git submodule update --init --recursive
 ```
 
-## Requirements
+### Requirements
 
 Start with a clean [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html) [environment](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) using **Python 3.11**, e.g. through
 
@@ -40,6 +45,10 @@ pip install -r dev-requirements.txt
 ```
 
 You should be all set! If something does not work, please reach out to us.
+
+## Usage
+[This notebook](experiments/wave/0001_tutorial_wave.ipynb) is a good tutorial on how to use GP-FVM.
+It also demonstrates how to switch between a direct Cholesky-based solver and an iterative CG-based solver.
 
 ## Running the experiments
 
@@ -78,6 +87,22 @@ We start with a GP **prior** over the solution of the PDE, which encodes our pri
 Then, we encode all of the constraints over the solution - i.e. the initial and boundary conditions as well as the PDE - as **linear observations** of the sample paths of our GP.
 GPs are nice in the sense that they allow us to directly condition on this linear information.
 We can form the GP posterior - with closed-form equations for the mean and covariance function - for which the sample paths fulfill the provided linear observations.
+
+![Collocation vs. FVM](./results/collocation_vs_fvm.png)
+
+The above figure illustrates what kind of linear observations are being used.
+In the figure, we want to learn $u(x) = \sin(x)$ from the differential equation $\frac{\mathrm{d}u}{\mathrm{d}x}(x) = \cos(x)$ with boundary condition $u(0) = u(2 \pi) = 0$.
+The idea is to "transform the function into derivative space" and then form observations there.
+
+> [!IMPORTANT]  
+> Collocation, which has been the prevailing method for GP-based PDE solvers so far, simply uses pointwise observations.
+> GP-FVM instead uses integral observations.
+> These observations ensure that the PDE is fulfilled **on average** across the given volume.
+
+> [!NOTE]
+> For this specific problem, these kinds of observations are very informative in the original, "non-derivative" space, which can be seen by the collapse in uncertainty.
+> This is due to the integral and derivative cancelling each other out through the fundamental theorem of calculus.
+
 
 ## Related work
 
