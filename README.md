@@ -125,3 +125,18 @@ If you find any bugs or if you need help, feel free to open an issue.
 Pull requests (PRs) are welcome.
 We will review them when we have time.
 Please use [black](https://github.com/psf/black) to format your code; we may set up some form of CI in the future.
+
+## Citation
+
+If you use this code, please cite our paper
+
+```bibtex
+@misc{Weiland2024GPFVM,
+      title = {Scaling up Probabilistic PDE Simulators with Structured Volumetric Information}, 
+      author = {Weiland, Tim and Pf\"ortner, Marvin and Hennig, Philipp},
+      year = {2024},
+      publisher = {arXiv},
+      doi = {10.48550/arXiv.2406.05020},
+      url = {https://arxiv.org/abs/2406.05020}
+}
+```
